@@ -14,6 +14,9 @@ export PYTHONPATH=$PYTHONPATH:${WORKSPACE}
 # general parameters
 export PORT=2000
 export TM_PORT=2500
+export SEED=42
+# export SEED=11037
+# export SEED=114514
 export DEBUG_CHALLENGE=0
 
 # Roach data collection
@@ -27,13 +30,16 @@ export REPETITIONS=1
 export TEAM_AGENT=${WORKSPACE}/roach/roach_agent.py
 export TEAM_CONFIG=${WORKSPACE}/roach/configs/roach_agent.yaml
 export RESUME=0
-export CHECKPOINT_ENDPOINT=${WORKSPACE}/logs/L10_testing/log_route_${ROUTES_SUBSET}.json
+export TIME_STAMP=$(date +"%s")
+export CHECKPOINT_ENDPOINT=${WORKSPACE}/logs/L10_testing/route_${ROUTES_SUBSET}_seed_${SEED}_${TIME_STAMP}.json
+export IS_EVAL=1
 
 export PYTHON_FILE=${WORKSPACE}/roach/leaderboard_custom/leaderboard_evaluator.py
 
 python3 ${PYTHON_FILE} \
     --port=${PORT} \
     --trafficManagerPort=${TM_PORT} \
+    --init_trafficManagerSeed=${SEED} \
     --debug=${DEBUG_CHALLENGE} \
     --scenarios=${SCENARIOS}  \
     --routes=${ROUTES} \
@@ -44,4 +50,4 @@ python3 ${PYTHON_FILE} \
     --track=${CHALLENGE_TRACK_CODENAME} \
     --resume=${RESUME} \
     --checkpoint=${CHECKPOINT_ENDPOINT} \
-    --is_eval=True
+    --is_eval=${IS_EVAL}
